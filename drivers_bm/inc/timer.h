@@ -77,6 +77,7 @@
 
 uint8_t InicializarTimers(void);
 uint8_t DefinirIntervaloRTI(uint32_t INTERVAL);
+void BorrarFlagTimerRIT();
 
 
 /*==================[external functions declaration]=========================*/

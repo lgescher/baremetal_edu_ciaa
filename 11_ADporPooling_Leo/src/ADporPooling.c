@@ -59,6 +59,8 @@
 #include "led.h"
 #include "ADC.h"
 #include "UART.h"
+#include "timer.h"
+
 #define TIEMPO_TIMER_RTI 2000//Tiempo en milisegundo del contador RTI
 /*==================[macros and definitions]=================================*/
 
@@ -88,6 +90,9 @@ void InterrupcionRTI(void)
 	uint16_t dato_Del_ADC = leerDatoAnalogico();
 	enviarNumeroAlPuerto(dato_Del_ADC);
 	ResponderAlDatoAnalogico(dato_Del_ADC);
+
+	//Borramos el flag de interrupción del timer RIT
+	BorrarFlagTimerRIT();
 }
 
 uint16_t leerDatoAnalogico(void)
@@ -153,12 +158,20 @@ void enviarDatoAlPuerto(uint8_t dato)
 
 void enviarNumeroAlPuerto(uint16_t num)
 {
-	uint8_t numero[4];
+	uint8_t M,C,D,U;
 
-	numero[0] = '0'+ num % 10;
-	numero[1] = '0'+ num % 100 / 10;
-	numero[2] = '0'+ num % 1000 / 100;
-	numero[3] = '0'+ num % 10000 / 1000;
+	M = num%1000;
+	C = (num-M*1000) %100;
+	D = (num-M*1000-C*100) %10;
+	U = (num-M*1000-C*100-D*10);
+
+	uint8_t numero[5];
+
+	numero[0] = '0'+ M;
+	numero[1] = '0'+ C;
+	numero[2] = '0'+ D;
+	numero[3] = '0'+ U;
+	numero[4] = 'LF';
 
 	int i;
 	for(i=0;i<strlen(numero);i++)

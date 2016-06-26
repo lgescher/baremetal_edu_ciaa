@@ -102,8 +102,11 @@ uint8_t DefinirIntervaloRTI(uint32_t INTERVAL)
 
 }
 
-
-
+void BorrarFlagTimerRIT()
+{
+//Borramos el flag de interrupción del timer RIT
+Chip_RIT_ClearInt(LPC_RITIMER);
+}
 
 /*==================[external functions definition]==========================*/
 /** \brief Main function

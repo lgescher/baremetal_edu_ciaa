@@ -58,6 +58,8 @@
 
 #include "led.h"
 #include "teclas.h"
+#include "timer.h"
+
 
 #define CANTIDAD_TECLAS 4
 
@@ -159,6 +161,9 @@ uint8_t VerificarEstado(void)
 	ActualizarEstadoPasado();
 	//Cuenta
 	contadorRTI++;
+
+	//Borramos el flag de interrupción del timer RIT
+	BorrarFlagTimerRIT();
 }
 
 uint8_t DetectarCambio(void)

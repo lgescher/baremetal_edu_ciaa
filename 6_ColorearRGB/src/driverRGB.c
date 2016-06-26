@@ -101,7 +101,7 @@ void InterrupcionRIT(void)
 	ContadorRGB();
 
 	//Borramos el flag de interrupción del timer RIT
-	Chip_RIT_ClearInt(LPC_RITIMER);
+	BorrarFlagTimerRIT();
 
 }
 

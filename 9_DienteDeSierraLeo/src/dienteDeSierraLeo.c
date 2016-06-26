@@ -58,6 +58,7 @@
 
 #include "teclas.h"
 #include "DAC.h"
+#include "timer.h"
 
 #define CANTIDAD_TECLAS 4
 
@@ -116,6 +117,9 @@ void InterrupcionRTI(void)
 {
 	generarSalida();//modifica el valor de tensión a mostrar
 	EnviarValor(valor);//envia el valor generado
+
+	//Borramos el flag de interrupción del timer RIT
+	BorrarFlagTimerRIT();
 }
 
 

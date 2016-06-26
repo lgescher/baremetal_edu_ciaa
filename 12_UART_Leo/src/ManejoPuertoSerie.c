@@ -59,6 +59,7 @@
 #include "teclas.h"
 #include "led.h"
 #include "UART.h"
+#include "timer.h"
 
 #define TIEMPO_TIMER_RTI 1000//Tiempo en milisegundo del contador RTI
 /*==================[macros and definitions]=================================*/
@@ -99,6 +100,9 @@ void InterrupcionRTI(void)
 	uint8_t dato = leerPuerto();
 	enviarNumeroAlPuerto(1235);
 	ResponderAlCaracter(dato);
+
+	//Borramos el flag de interrupción del timer RIT
+	BorrarFlagTimerRIT();
 }
 
 uint8_t leerPuerto()
