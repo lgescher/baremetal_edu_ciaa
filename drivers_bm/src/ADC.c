@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriverADC
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,18 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+/** \brief Blinking Bare Metal driver led
  **
- ** This is a mini example of the CIAA Firmware
+ **
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal LED Driver
  ** @{ */
 
 /*
@@ -62,17 +59,88 @@
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+#ifndef CPU
+#error CPU shall be defined
+#endif
+#if (lpc4337 == CPU)
+#elif (mk60fx512vlq15 == CPU)
+#else
+#endif
 
-/*==================[typedef]================================================*/
+#include "timer.h"
+#include "chip.h"
+#include "ADC.h"
 
-/*==================[external data declaration]==============================*/
+//#include "ritimer 18xx 43xx.h"
 
-/*==================[external functions declaration]=========================*/
+
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+//INICIALIZACIÓN DE LA CONFIGURACIÓN PARA EL ADC
+static ADC_CLOCK_SETUP_T ADCSetup;
+
+uint32_t ADC_ID_1 = 1;
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+
+
+
+
+uint8_t InicializarADC(void)
+{
+
+	//INICIALIZACIÓN DE LA CONFIGURACIÓN PARA EL ADC
+	ADCSetup.adcRate = 1000;
+	ADCSetup.bitsAccuracy = ADC_10BITS;	/*!< ADC bit accuracy */
+	ADCSetup.burstMode= DISABLE;
+
+	Chip_SCU_ADC_Channel_Config(1,1);
+
+	//Inicializa el ADC y la estructura de instalación de ADC al valor por defecto
+	Chip_ADC_Init(LPC_ADC1, &ADCSetup);
+
+	Chip_ADC_EnableChannel(LPC_ADC1, ADC_CH1, ENABLE);
+}
+
+uint16_t Leer_Dato_ADC(void)
+{
+	uint16_t dato_Del_ADC;
+	//Seleccionamos el modo de iniciar la conversión AD
+	Chip_ADC_SetStartMode(LPC_ADC1,  ADC_START_NOW, ADC_TRIGGERMODE_RISING);
+
+	//Esperaramo por que se complete la comversión A/D
+
+	while (Chip_ADC_ReadStatus(LPC_ADC1, ADC_CH1, ADC_DR_DONE_STAT)!=SET){};
+	//Leer el valor de ADC
+	Chip_ADC_ReadValue(LPC_ADC1, ADC_CH1, &dato_Del_ADC);
+
+	return dato_Del_ADC;
+}
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

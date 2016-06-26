@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriverLPCOpen
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,9 +31,9 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+#ifndef LED_H
+#define LED_H
+/** \brief Bare Metal example header file
  **
  ** This is a mini example of the CIAA Firmware
  **
@@ -45,7 +43,7 @@
  ** @{ */
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal example header file
  ** @{ */
 
 /*
@@ -61,12 +59,63 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "stdint.h"
+
 
 /*==================[macros]=================================================*/
+#define lpc4337            1
+#define mk60fx512vlq15     2
+
+#define LEDR 0
+#define LEDB 2
+#define LEDG 1
+#define LED1 14
+#define LED2 11
+#define LED3 12
+#define paquetePinLed 2
+#define puertoLed_1 0
+#define puertoLed_2 1
+#define puertoLed_3 1
+#define puertoLedRojo 5
+#define puertoLedVerde 5
+#define puertoLedAzul 5
+#define APAGAR 0
+#define PRENDER 1
+#define POS_LED_1_ 1
+#define POS_LED_2_ 2
+#define POS_LED_3_ 3
+#define POS_LED_RGB_ 4
+
 
 /*==================[typedef]================================================*/
 
+typedef struct {
+	uint8_t ledR;
+	uint8_t ledG;
+	uint8_t ledB;
+	uint8_t LED_UNO;
+	uint8_t LED_DOS;
+	uint8_t LED_TRES;}LED_1_2_3_RGB;
+
 /*==================[external data declaration]==============================*/
+
+/* */
+
+int inicializarPuertos(void);
+int prenderLed(uint8_t numLed );
+int apagarLed(uint8_t numLed);
+int cambiarEstado(LED_1_2_3_RGB *LedRGB);
+int cambiarLedHacia(LED_1_2_3_RGB* leds, uint8_t POS_ACTUAL);
+
+
+
+
+
+
+
+
+
+
 
 /*==================[external functions declaration]=========================*/
 
@@ -74,5 +123,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
+#endif /* #ifndef MI_NUEVO_PROYECTO_H */
 

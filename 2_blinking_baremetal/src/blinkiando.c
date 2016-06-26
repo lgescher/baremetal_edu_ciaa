@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, XXXXXX
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,18 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+/** \brief Blinking Bare Metal example source file
  **
- ** This is a mini example of the CIAA Firmware
+ ** This is a mini example of the CIAA Firmware.
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal example source file
  ** @{ */
 
 /*
@@ -61,18 +58,79 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "blinkiando.h"       /* <= own header */
 
-/*==================[macros]=================================================*/
+#include "led.h"
 
-/*==================[typedef]================================================*/
+/*==================[macros and definitions]=================================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data declaration]==============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+
+
+int main(void)
+{
+   /* perform the needed initialization here */
+
+	uint8_t INICIO;
+	uint8_t PRENDIDO = 1;
+	uint8_t APAGADO = 0;
+	uint8_t BLINKIANDO;
+	uint8_t CAMBIO_DE_ESTADO = 0;
+	uint32_t i;
+	uint32_t INTERVALO=5000000;
+
+	//Intancaimos e inicializamos el struc
+	LED_1_2_3_RGB LEDS;
+
+	//Inicializamos los puertos
+	INICIO = inicializarPuertos();
+
+	//Seleccionamos lo que vamos a cambiar de estado. En este caso al LED1
+	LEDS.ledR = PRENDIDO;
+	LEDS.ledG = APAGADO;
+	LEDS.ledB = APAGADO;
+	LEDS.LED_UNO = APAGADO;
+	LEDS.LED_DOS = APAGADO;
+	LEDS.LED_TRES = APAGADO;
+
+
+	do
+	  {
+		CAMBIO_DE_ESTADO = cambiarEstado(&LEDS );
+
+			//Esperamos un intervalo
+			for(i=INTERVALO ;i!=0;i--)
+			{
+				asm("nop");
+			};
+	  }
+	  while(1);
+
+
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

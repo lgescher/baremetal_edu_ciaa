@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, colorearRGB Leandro Escher
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,14 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
+
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal example source file
  ** @{ */
 
 /*
@@ -61,18 +54,99 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "driverRGB.h"       /* <= own header */
 
-/*==================[macros]=================================================*/
+#include "chip.h"
+#include "timer.h"
+#include "led.h"
+#include "stdlib.h"
 
-/*==================[typedef]================================================*/
+/*==================[macros and definitions]=================================*/
 
-/*==================[external data declaration]==============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+//Variable destinada a llevar la cuenta del contadorRTI
+volatile uint32_t cuentaRGB=0;
+
+
+uint8_t CANTIDAD_DE_COLORES=17;
+uint8_t PASO=17;
+
+uint32_t paletaDeColor[17];
+
+
+void InterrupcionRIT(void)
+{
+	//Llamamos a la función que cuenta
+	ContadorRGB();
+
+	//Borramos el flag de interrupción del timer RIT
+	Chip_RIT_ClearInt(LPC_RITIMER);
+
+}
+
+void ContadorRGB(void)
+{
+	cuentaRGB++;
+}
+
+void SetContadorRGB(uint32_t cuenta)
+{
+	cuentaRGB=cuenta;
+}
+
+uint32_t GetContadorRGB(void)
+{
+	return cuentaRGB;
+}
+
+void GenerarColoresRGB(void)
+{
+		int i=0;
+
+		for(i=0;i<CANTIDAD_DE_COLORES;i++)
+			{
+				paletaDeColor[i]=PASO*i;
+			}
+}
+void CambiarColorRGB(COLORES_LEDRGB* COLORES_RGB,uint32_t DURAC_DEL_CICLO_COLOR)
+{
+
+	int posicionEnPaleta1 = rand() %CANTIDAD_DE_COLORES;
+	int posicionEnPaleta2 = rand() %CANTIDAD_DE_COLORES;
+	int posicionEnPaleta3 = rand() %CANTIDAD_DE_COLORES;
+
+
+	COLORES_RGB->color_ledR=paletaDeColor[posicionEnPaleta1];
+	COLORES_RGB->color_ledG=paletaDeColor[posicionEnPaleta2];
+	COLORES_RGB->color_ledB=paletaDeColor[posicionEnPaleta3];
+
+}
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

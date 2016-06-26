@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriverTECLASLPCOpen
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,18 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+/** \brief Blinking Bare Metal driver led
  **
- ** This is a mini example of the CIAA Firmware
+ **
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal LED Driver
  ** @{ */
 
 /*
@@ -62,17 +59,68 @@
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+#ifndef CPU
+#error CPU shall be defined
+#endif
+#if (lpc4337 == CPU)
+#elif (mk60fx512vlq15 == CPU)
+#else
+#endif
 
-/*==================[typedef]================================================*/
+#include "timer.h"
+#include "chip.h"
+//#include "ritimer 18xx 43xx.h"
 
-/*==================[external data declaration]==============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+uint8_t InicializarTimers(void)
+{
+	/*Le pasamos como parametro la direccion base del periferico RIT definida ya en chip_lpc_43xx.h como LPC RITIMER.*/
+	Chip_RIT_Init (LPC_RITIMER);
+
+	/*Habilitamos la interrupción del TIMER RIT, esto lo vemos en la lista de interrupciones del vector*/
+    NVIC_EnableIRQ(_SLOT_RTI_TIMER);
+
+	return TRUE;
+}
+
+uint8_t DefinirIntervaloRTI(uint32_t INTERVAL)
+{
+	/*configuración del intervalo (en ms.) de interrupcion empleando*/
+	Chip_RIT_SetTimerInterval (LPC_RITIMER , INTERVAL);
+
+}
+
+
+
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

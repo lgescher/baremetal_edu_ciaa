@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriver DAC
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,9 +31,9 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+#ifndef DAC_H
+#define DAC_H
+/** \brief Bare Metal example header file
  **
  ** This is a mini example of the CIAA Firmware
  **
@@ -45,7 +43,7 @@
  ** @{ */
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal example header file
  ** @{ */
 
 /*
@@ -61,12 +59,25 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "stdint.h"
+
 
 /*==================[macros]=================================================*/
+#define lpc4337            1
+#define mk60fx512vlq15     2
+
+#define _SLOT_RTI_TIMER 11
 
 /*==================[typedef]================================================*/
 
+
 /*==================[external data declaration]==============================*/
+
+/* */
+
+uint8_t InicializarDAC(void);
+uint8_t Leer_DAC(uint32_t valor);
+
 
 /*==================[external functions declaration]=========================*/
 
@@ -74,5 +85,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
+#endif /* #ifndef MI_NUEVO_PROYECTO_H */
 

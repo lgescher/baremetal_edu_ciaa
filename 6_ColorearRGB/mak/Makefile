@@ -1,8 +1,7 @@
 ###############################################################################
 #
-# Copyright 2014, ACSE & CADIEEL
-#    ACSE   : http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
-#    CADIEEL: http://www.cadieel.org.ar
+# Copyright 2015, Mariano Cerdeiro
+# All rights reserved.
 #
 # This file is part of CIAA Firmware.
 #
@@ -46,9 +45,8 @@ SRC_FILES            += $(wildcard $($(PROJECT_NAME)_SRC_PATH)$(DS)*.c)
 # configuration for OSEK-OS
 OIL_FILES            += $(PROJECT_PATH)$(DS)etc$(DS)$(PROJECT_NAME).oil
 # Modules needed for this example
-MODS ?= modules$(DS)posix           \
-        modules$(DS)ciaak           \
-        modules$(DS)drivers         \
-        modules$(DS)rtos            \
-        modules$(DS)libs
-
+MODS 						+= projects$(DS)drivers_bm
+#MODS ?= modules$(DS)posix           \
+#        modules$(DS)ciaak           \
+#        externals$(DS)drivers         \
+#        modules$(DS)libs            \   

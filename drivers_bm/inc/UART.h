@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriver UART
+ *  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,9 +31,9 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+#ifndef UART_H
+#define UART_H
+/** \brief Bare Metal example header file
  **
  ** This is a mini example of the CIAA Firmware
  **
@@ -45,7 +43,7 @@
  ** @{ */
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal example header file
  ** @{ */
 
 /*
@@ -61,12 +59,32 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "stdint.h"
+
 
 /*==================[macros]=================================================*/
+#define lpc4337            1
+#define mk60fx512vlq15     2
+
+#define _SLOT_RTI_TIMER 11
+
+
+#define _PAQUETE_PIN_UART2 7
+#define _PIN_UART2_TX 1
+#define _PIN_UART2_RX 2
+#define _BAUDRATE 115200
+
 
 /*==================[typedef]================================================*/
 
+
 /*==================[external data declaration]==============================*/
+
+/* */
+
+void Inicializar_UART(void);
+uint8_t LeerByte_UART(void);
+uint8_t EnviarByte_UART(uint8_t dato);
 
 /*==================[external functions declaration]=========================*/
 
@@ -74,5 +92,6 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
+#endif /* #ifndef MI_NUEVO_PROYECTO_H */
+
 

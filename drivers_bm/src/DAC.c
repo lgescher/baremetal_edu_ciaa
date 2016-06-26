@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriverDAC
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,18 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+/** \brief Blinking Bare Metal driver led
  **
- ** This is a mini example of the CIAA Firmware
+ **
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal LED Driver
  ** @{ */
 
 /*
@@ -62,17 +59,78 @@
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+#ifndef CPU
+#error CPU shall be defined
+#endif
+#if (lpc4337 == CPU)
+#elif (mk60fx512vlq15 == CPU)
+#else
+#endif
 
-/*==================[typedef]================================================*/
+#include "timer.h"
+#include "chip.h"
+#include "DAC.h"
 
-/*==================[external data declaration]==============================*/
+//#include "ritimer 18xx 43xx.h"
 
-/*==================[external functions declaration]=========================*/
+
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+uint8_t InicializarDAC(void)
+{
+	Chip_SCU_DAC_Analog_Config();///*Enable analog function DAC on pin P4_4*/
+
+/*	Initial DAC configuration.
+
+	         - Maximum current is 700 uA
+	         - Value to AOUT is 0*/
+	Chip_DAC_Init(LPC_DAC);
+
+
+	//Enables the DMA operation and controls DMA timer.
+	//DAC_CNT_ENA    :enable/disable timer out counter
+	//DAC_DMA_ENA    :enable/disable DMA access
+	Chip_DAC_ConfigDAConverterControl(LPC_DAC, DAC_CNT_ENA | DAC_DMA_ENA);
+
+ 	return TRUE;
+}
+
+uint8_t EnviarValorBuffer_DAC(uint32_t valor)
+{
+	//Update value to DAC buffer.
+    Chip_DAC_UpdateValue(LPC_DAC, valor);
+	return TRUE;
+}
+
+
+
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

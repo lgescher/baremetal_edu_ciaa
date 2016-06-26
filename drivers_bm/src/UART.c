@@ -1,7 +1,5 @@
-/* Copyright 2014, Mariano Cerdeiro
- * Copyright 2014, Pablo Ridolfi
- * Copyright 2014, Juan Cecconi
- * Copyright 2014, Gustavo Muro
+/* Copyright 2016, LeoDriverUART
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,19 +31,18 @@
  *
  */
 
-#ifndef _BLINKING_H_
-#define _BLINKING_H_
-/** \brief Blinking example header file
+/** \brief Blinking Bare Metal driver led
  **
- ** This is a mini example of the CIAA Firmware
+ **
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
+
 /** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup Blinking Blinking example header file
+/** \addtogroup Baremetal Bare Metal LED Driver
  ** @{ */
 
 /*
@@ -62,17 +59,78 @@
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+#ifndef CPU
+#error CPU shall be defined
+#endif
+#if (lpc4337 == CPU)
+#elif (mk60fx512vlq15 == CPU)
+#else
+#endif
 
-/*==================[typedef]================================================*/
+#include "timer.h"
+#include "chip.h"
+#include "UART.h"
 
-/*==================[external data declaration]==============================*/
+//#include "ritimer 18xx 43xx.h"
 
-/*==================[external functions declaration]=========================*/
+
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+void Inicializar_UART(void)
+{
+//Configuramos la función del pint de la UART2 para que se conecte con la FTDI P7_1 (tx) y P7_2 (rx)
+Chip_SCU_PinMux(_PAQUETE_PIN_UART2,_PIN_UART2_TX, MD_PDN, FUNC6);
+Chip_SCU_PinMux(_PAQUETE_PIN_UART2,_PIN_UART2_RX, MD_PLN|MD_EZI|MD_ZI, FUNC6);
+
+Chip_UART_Init(LPC_USART2);
+
+Chip_UART_SetBaud(LPC_USART2,_BAUDRATE);
+
+Chip_UART_SetupFIFOS(LPC_USART2, UART_FCR_FIFO_EN | UART_FCR_TRG_LEV0);
+//El level 0 es para que cuando al fifo llegue un caracter lo mande, por ejemplo en lev3, esperaria 8 caracteres.
+
+Chip_UART_TXEnable(LPC_USART2);
+}
+
+uint8_t LeerByte_UART(void)
+{
+	Chip_UART_ReadByte(LPC_USART2);
+}
+
+uint8_t EnviarByte_UART(uint8_t dato)
+{
+	Chip_UART_SendByte(LPC_USART2, dato);
+}
+
+
+
+
+/*==================[external functions definition]==========================*/
+/** \brief Main function
+ *
+ * This is the main entry point of the software.
+ *
+ * \returns 0
+ *
+ * \remarks This function never returns. Return value is only to avoid compiler
+ *          warnings or errors.
+ */
+
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _BLINKING_H_ */
 

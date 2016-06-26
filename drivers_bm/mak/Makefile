@@ -3,6 +3,8 @@
 # Copyright 2014, ACSE & CADIEEL
 #    ACSE   : http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
 #    CADIEEL: http://www.cadieel.org.ar
+# Copyright 2015, Mariano Cerdeiro
+# All rights reserved.
 #
 # This file is part of CIAA Firmware.
 #
@@ -33,22 +35,24 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
-# Project Name: based on Project Path and used to define OSEK configuration file
-PROJECT_NAME               = $(lastword $(subst $(DS), , $(PROJECT_PATH)))
-# Project path
-# Defined $(PROJECT_PATH) in makefile.mine
-# source path
-$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)src
-# include path
-INC_FILES            += $(PROJECT_PATH)$(DS)inc
-# library source files
-SRC_FILES            += $(wildcard $($(PROJECT_NAME)_SRC_PATH)$(DS)*.c)
-# configuration for OSEK-OS
-OIL_FILES            += $(PROJECT_PATH)$(DS)etc$(DS)$(PROJECT_NAME).oil
-# Modules needed for this example
-MODS ?= modules$(DS)posix           \
-        modules$(DS)ciaak           \
-        modules$(DS)drivers         \
-        modules$(DS)rtos            \
-        modules$(DS)libs
+# library
+LIBS 				      += drivers_bm
+# version
+drivers_bm_VERSION		= 0.1.0
+# library path
+drivers_bm_PATH 	       = $(ROOT_DIR)$(DS)projects$(DS)drivers_bm
+# library source path
+drivers_bm_SRC_PATH      = $(drivers_bm_PATH)$(DS)src
+# library include path
+drivers_bm_INC_PATH 	    = $(drivers_bm_PATH)$(DS)inc                      \
+   $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)inc                               \
+   $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)inc                \
+   $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)inc
 
+# library source files
+drivers_bm_SRC_FILES     = $(wildcard $(drivers_bm_SRC_PATH)$(DS)*.c)
+drivers_bm_SRC_FILES    += $(wildcard $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)src$(DS)*.c)
+drivers_bm_SRC_FILES    += $(wildcard $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)src$(DS)*.c)
+drivers_bm_SRC_FILES    += $(wildcard $(drivers_bm_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)src$(DS)*.c)
+
+include externals$(DS)drivers$(DS)mak$(DS)Makefile
