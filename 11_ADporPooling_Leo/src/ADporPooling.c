@@ -61,7 +61,7 @@
 #include "UART.h"
 #include "timer.h"
 
-#define TIEMPO_TIMER_RTI 2000//Tiempo en milisegundo del contador RTI
+#define TIEMPO_TIMER_RTI 100//Tiempo en milisegundo del contador RTI
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
@@ -88,7 +88,7 @@ const uint8_t palabras[];
 void InterrupcionRTI(void)
 {
 	uint16_t dato_Del_ADC = leerDatoAnalogico();
-	enviarNumeroAlPuerto(dato_Del_ADC);
+	while(enviarNumeroAlPuerto(dato_Del_ADC)){};
 	ResponderAlDatoAnalogico(dato_Del_ADC);
 
 	//Borramos el flag de interrupción del timer RIT
@@ -156,8 +156,10 @@ void enviarDatoAlPuerto(uint8_t dato)
 	EnviarByte_UART(dato);
 }
 
-void enviarNumeroAlPuerto(uint16_t num)
+uint8_t enviarNumeroAlPuerto(uint16_t num)
 {
+	//El salto de linea es ASCII es el 10
+	const SL = 10;
 	uint8_t M,C,D,U;
 
 	M = num%1000;
@@ -171,13 +173,16 @@ void enviarNumeroAlPuerto(uint16_t num)
 	numero[1] = '0'+ C;
 	numero[2] = '0'+ D;
 	numero[3] = '0'+ U;
-	numero[4] = 'LF';
+	numero[4] = SL;
 
 	int i;
 	for(i=0;i<strlen(numero);i++)
 	{
 		enviarDatoAlPuerto(numero[i]);
 	}
+
+	return FIN_DEL_ENVIO;
+
 }
 
 

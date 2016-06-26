@@ -71,6 +71,7 @@
 # define TRUE 1
 # define PRENDIDO 1;
 # define APAGADO 0;
+# define FIN_DEL_ENVIO 1;
 
 /*==================[typedef]================================================*/
 
@@ -109,7 +110,7 @@ void InterrupcionRTI(void);
 uint8_t leerPuerto();
 void enviarDatoAlPuerto(uint8_t dato);
 void enviarPalabraAlPuerto(uint8_t palabras[]);
-void enviarNumeroAlPuerto(uint8_t num);
+uint8_t enviarNumeroAlPuerto(uint8_t num);
 
 uint8_t ResponderAlCaracter(uint8_t dato);
 

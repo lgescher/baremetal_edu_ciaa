@@ -71,6 +71,7 @@
 # define TRUE 1
 # define PRENDIDO 1;
 # define APAGADO 0;
+# define FIN_DEL_ENVIO 1;
 
 /*==================[typedef]================================================*/
 
@@ -111,7 +112,7 @@ uint16_t leerDatoAnalogico(void);
 void ResponderAlDatoAnalogico(uint16_t dato);
 
 void enviarDatoAlPuerto(uint8_t dato);
-void enviarNumeroAlPuerto(uint16_t num);
+uint8_t enviarNumeroAlPuerto(uint16_t num);
 
 
 
