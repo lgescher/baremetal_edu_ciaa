@@ -88,8 +88,8 @@ const uint8_t palabras[];
 void InterrupcionRTI(void)
 {
 	uint16_t dato_Del_ADC = leerDatoAnalogico();
-	while(enviarNumeroAlPuerto(dato_Del_ADC)){};
-	ResponderAlDatoAnalogico(dato_Del_ADC);
+	while(enviarNumeroAlPuerto(dato_Del_ADC)){ResponderAlDatoAnalogico(dato_Del_ADC);};
+
 
 	//Borramos el flag de interrupción del timer RIT
 	BorrarFlagTimerRIT();
@@ -160,11 +160,11 @@ uint8_t enviarNumeroAlPuerto(uint16_t num)
 {
 	//El salto de linea es ASCII es el 10
 	const SL = 10;
-	uint8_t M,C,D,U;
+	uint8_t M,C,D,U; //M=Miles , C=centena, D= decena, U=unidad
 
-	M = num%1000;
-	C = (num-M*1000) %100;
-	D = (num-M*1000-C*100) %10;
+	M = num/1000;
+	C = (num-M*1000) /100;
+	D = (num-M*1000-C*100) /10;
 	U = (num-M*1000-C*100-D*10);
 
 	uint8_t numero[5];
