@@ -76,7 +76,8 @@
 /* */
 
 uint8_t InicializarDAC(void);
-uint8_t Leer_DAC(uint32_t valor);
+uint8_t EnviarValorBuffer_DAC(uint32_t valor);
+
 
 
 /*==================[external functions declaration]=========================*/
