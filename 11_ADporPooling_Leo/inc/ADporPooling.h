@@ -69,9 +69,9 @@
 
 # define FALSE 0
 # define TRUE 1
-# define PRENDIDO 1;
-# define APAGADO 0;
-# define FIN_DEL_ENVIO 1;
+# define PRENDIDO 1
+# define APAGADO 0
+# define ENVIADO 1
 
 /*==================[typedef]================================================*/
 

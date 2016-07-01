@@ -96,7 +96,7 @@ uint8_t InicializarDAC(void)
 	         - Value to AOUT is 0*/
 	Chip_DAC_Init(LPC_DAC);
 
-
+	//Chip_DAC_SetBias(LPC_DAC, DAC_MAX_UPDATE_RATE_400kHz);
 	//Enables the DMA operation and controls DMA timer.
 	//DAC_CNT_ENA    :enable/disable timer out counter
 	//DAC_DMA_ENA    :enable/disable DMA access

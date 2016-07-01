@@ -71,7 +71,7 @@
 # define TRUE 1
 # define PRENDIDO 1;
 # define APAGADO 0;
-# define FIN_DEL_ENVIO 1;
+# define FIN_DEL_ENVIO 0;
 
 /*==================[typedef]================================================*/
 

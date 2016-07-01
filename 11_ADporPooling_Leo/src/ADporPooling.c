@@ -74,6 +74,8 @@
 //Vector de letras para sacar palabras por pantalla
 const uint8_t palabras[];
 
+
+
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
@@ -88,9 +90,8 @@ const uint8_t palabras[];
 void InterrupcionRTI(void)
 {
 	uint16_t dato_Del_ADC = leerDatoAnalogico();
-	while(enviarNumeroAlPuerto(dato_Del_ADC)){ResponderAlDatoAnalogico(dato_Del_ADC);};
-
-
+	enviarNumeroAlPuerto(dato_Del_ADC);
+	ResponderAlDatoAnalogico(dato_Del_ADC);
 	//Borramos el flag de interrupción del timer RIT
 	BorrarFlagTimerRIT();
 }
@@ -175,13 +176,13 @@ uint8_t enviarNumeroAlPuerto(uint16_t num)
 	numero[3] = '0'+ U;
 	numero[4] = SL;
 
-	int i;
+	int i=0;
 	for(i=0;i<strlen(numero);i++)
 	{
 		enviarDatoAlPuerto(numero[i]);
 	}
 
-	return FIN_DEL_ENVIO;
+	return ENVIADO;
 
 }
 
@@ -211,8 +212,6 @@ int main(void)
 
 	//Inicializamos el ADC
 	InicializarADC();
-
-
 
 	//ARRANCAMOS UN CICLO INFINITO
 

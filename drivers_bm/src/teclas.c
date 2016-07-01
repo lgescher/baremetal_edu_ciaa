@@ -72,19 +72,19 @@
 
 
 
-
-
-
-
-
-
-
-
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
 
+uint16_t INTERVALO = 5000;
+
 /*==================[internal functions declaration]=========================*/
+void delay(uint32_t cuentas){
+	uint32_t i;
+	for (i=cuentas;i!=0;i--){
+		asm("nop");
+	};
+};
 
 /*==================[internal data definition]===============================*/
 
@@ -168,6 +168,86 @@ uint8_t EscanearTeclado(TECLAS_1_2_3_4 * TECLAS)
 	return TRUE;
 
 }
+
+
+uint8_t EstadoTecla_Antirebote_Liberacion(uint8_t numTec, uint8_t Antirrebote, uint8_t Liberacion)
+{//RETORNA TRUE SI LA TECLA ESTA APRETA O SI HAY UN CAMBIO EN LA LIBERACIÓN
+
+	uint8_t PIN=0;
+	uint8_t PUERTO=0;
+
+		switch(numTec)
+	{
+	case TEC1:
+		PIN=_TEC1_;
+		PUERTO=_PUERTO_TEC1_;
+		break;
+	case TEC2:
+		PIN=_TEC2_;
+		PUERTO=_PUERTO_TEC2_;
+		break;
+	case TEC3:
+		PIN=_TEC3_;
+		PUERTO=_PUERTO_TEC3_;
+		break;
+	case TEC4:
+		PIN=_TEC4_;
+		PUERTO=_PUERTO_TEC4_;
+		break;
+	default:
+		return FALSE;
+		break;
+	}
+
+	if (Chip_GPIO_GetPinState(LPC_GPIO_PORT,PUERTO,PIN) == FALSE )//SI ESTA BAJO, ENTRA
+		{
+		if (Antirrebote == TRUE)//SI EL ANTIRREBOTE ESTA ACTIVADO, ESPERA UN DELAY ANTES DE ENVIAR EL ESTADO
+		{
+			delay(INTERVALO);
+			if (Chip_GPIO_GetPinState(LPC_GPIO_PORT,PUERTO,PIN) == FALSE)
+			{
+				if (Liberacion == TRUE)//SI LA LIBERACIÓN ESTA ACTIVADA, ESPERA A QUE SE LIBERE LA TECLA
+				{
+					while (Chip_GPIO_GetPinState(LPC_GPIO_PORT,PUERTO,PIN) == FALSE)//Esperamos hasta que la tecla esté liberada
+					{
+						asm("nop");
+					}
+					return TRUE;
+				}
+				else //SIN ESPERAR QUE LIBERE
+				{
+					return TRUE;
+				}
+			}
+			else //SI LUEGO DE ESPERAR NO ESTA ACTIVADA Y FALLA EL CONTROL DEL REBOTE
+				{
+				return FALSE;
+				}
+		}
+		else //SIN ANTIREBOTE
+		{
+			if (Liberacion == TRUE) //SI LA LIBERACIÓN ESTA ACTIVADA, ESPERA A QUE SE LIBERE LA TECLA
+				{
+				while (Chip_GPIO_GetPinState(LPC_GPIO_PORT,PUERTO,PIN) == FALSE)//Esperamos hasta que la tecla esté liberada
+					{
+					asm("nop");
+					}
+				return TRUE;
+				}
+			else //SIN ESPERAR QUE LIBERE
+				{
+				return TRUE;
+				}
+			}
+		}
+	else //NO HAY TECLA APRETADA, NI CAMBIO EN LA LIBERACION
+	{
+		return FALSE;
+	}
+
+}
+
+
 
 /*==================[external functions definition]==========================*/
 /** \brief Main function

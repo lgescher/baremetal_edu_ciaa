@@ -98,7 +98,6 @@ const uint8_t palabras[];
 void InterrupcionRTI(void)
 {
 	uint8_t dato = leerPuerto();
-	enviarNumeroAlPuerto(135);
 	ResponderAlCaracter(dato);
 
 	//Borramos el flag de interrupción del timer RIT
@@ -122,33 +121,6 @@ void enviarPalabraAlPuerto(uint8_t palabras[])
 	{
 		enviarDatoAlPuerto(palabras[i]);
 	}
-}
-
-uint8_t enviarNumeroAlPuerto(uint8_t num)
-{
-	//El salto de linea es ASCII es el 10
-	const SL = 10;
-	uint8_t C,D,U; //C=centena, D= decena, U=unidad
-
-	C =  num /100;
-	D = (num-C*100) /10;
-	U = (num-C*100-D*10);
-
-	uint8_t numero[5];
-
-	numero[0] = '0'+ C;
-	numero[1] = '0'+ D;
-	numero[2] = '0'+ U;
-	numero[3] = SL;
-
-	int i;
-	for(i=0;i<4;i++)
-	{
-		enviarDatoAlPuerto(numero[i]);
-	}
-
-	return FIN_DEL_ENVIO;
-
 }
 
 uint8_t ResponderAlCaracter(uint8_t dato)

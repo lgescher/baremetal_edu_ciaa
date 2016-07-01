@@ -102,13 +102,14 @@ uint8_t InicializarADC(void)
 	ADCSetup.bitsAccuracy = ADC_10BITS;	/*!< ADC bit accuracy */
 	ADCSetup.burstMode= DISABLE;
 
-	Chip_SCU_ADC_Channel_Config(1,1);
+	Chip_SCU_ADC_Channel_Config(ADC_1, ADC_CH1);
 
 	//Inicializa el ADC y la estructura de instalación de ADC al valor por defecto
 	Chip_ADC_Init(LPC_ADC1, &ADCSetup);
 
 	Chip_ADC_EnableChannel(LPC_ADC1, ADC_CH1, ENABLE);
 }
+
 
 uint16_t Leer_Dato_ADC(void)
 {
@@ -118,8 +119,7 @@ uint16_t Leer_Dato_ADC(void)
 
 	//Esperaramo por que se complete la comversión A/D
 
-	while (Chip_ADC_ReadStatus(LPC_ADC1, ADC_CH1, ADC_DR_DONE_STAT)!=SET){};
-	//Leer el valor de ADC
+	while (Chip_ADC_ReadStatus(LPC_ADC1, ADC_CH1, ADC_DR_DONE_STAT)!=SET){}
 	Chip_ADC_ReadValue(LPC_ADC1, ADC_CH1, &dato_Del_ADC);
 
 	return dato_Del_ADC;

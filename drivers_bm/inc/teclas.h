@@ -84,6 +84,8 @@
 #define TEC3 3
 #define TEC4 4
 
+
+
 /*==================[typedef]================================================*/
 
 typedef struct {
@@ -99,7 +101,7 @@ typedef struct {
 uint8_t InicializarTeclas(void);
 uint8_t EstadoTecla(uint8_t numTec );
 uint8_t EscanearTeclado(TECLAS_1_2_3_4* TECLAS);
-
+uint8_t EstadoTecla_Antirebote_Liberacion(uint8_t numTec, uint8_t Antirrebote, uint8_t Liberacion);
 
 
 
